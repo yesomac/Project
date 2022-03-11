@@ -1,0 +1,63 @@
+﻿@page "/clientdelete/{id_cli:int}"
+@using Data.Model
+@using Data.Service
+
+@inject IClienteService ClienteService
+@inject NavigationManager NavigationManager
+
+<h3>ClienteDelete</h3>
+<EditForm Model="@cliente">
+	<table class="table">
+		<tr>
+			<td>ID</td>
+			<td><input type="text" @bind="cliente.id_cli" disabled></input></td>
+		</tr>
+		<tr>
+			<td>NOMBRE</td>
+			<td><input type="text" @bind="cliente.nom_cli" disabled></input></td>
+		</tr>
+		<tr>
+			<td>APELLIDO</td>
+			<td><input type="text" @bind="cliente.apell_cli" disabled></input></td>
+		</tr>
+		<tr>
+			<td>TELEFONO</td>
+			<td><input type="text" @bind="cliente.tel_cli" disabled></input></td>
+		</tr>
+		<tr>
+			<td>EMAIL</td>
+			<td><input type="text" @bind="cliente.email_cli" disabled></input></td>
+		</tr>
+		<tr>
+			<td>DIRECCION</td>
+			<td><input type="text" @bind="cliente.dir_cli" disabled></input></td>
+		</tr>
+		<tr>
+			<td colspan="2" style="text-align:center">
+				<input type="submit" value="Eliminar" @onclick="deleteclient" />
+				<input type="submit" value="Cancelar" @onclick="Cancel" />
+			</td>
+		</tr>
+	</table>
+</EditForm>
+
+@code {
+	Cliente cliente = new Cliente();
+	[Parameter]
+	public int id_cli { get; set; }
+	protected async Task deleteclient()
+	{
+		await ClienteService.ClienteDelete(id_cli);
+		NavigationManager.NavigateTo("/clientlist");
+	}
+
+	protected override async Task OnInitializedAsync()
+	{
+		cliente = await ClienteService.GetCliente(id_cli);
+	}
+
+	protected void Cancel()
+	{
+		NavigationManager.NavigateTo("/clientlist");
+	}
+}

@@ -41,5 +41,48 @@ namespace Project.Data.Service
             }
             return true;
         }
+
+
+        //eliminar cliente
+        public async Task<bool> ClienteDelete(int id)
+        {
+            var conn = new SqlConnection(_configuration.Value);
+                var query = @"DELETE FROM Cliente WHERE id_cli = @id";
+                var result = await conn.ExecuteAsync(query.ToString(), new { id = id });
+            return result > 0;
+        }
+
+        //listado clientes
+        public async Task<IEnumerable<Cliente>> GetAllClientes()
+        {
+            var conn = new SqlConnection(_configuration.Value);
+            var query = "SELECT id_cli, nom_cli, apell_cli, tel_cli, email_cli, dir_cli FROM Cliente";
+            return await conn.QueryAsync<Cliente>(query.ToString(), new { });
+        }
+        
+        //seleccionar un cliente
+        public async Task<Cliente> GetCliente(int id_cli)
+        {
+            var conn = new SqlConnection(_configuration.Value);
+            var query = "SELECT id_cli, nom_cli, apell_cli, tel_cli, email_cli, dir_cli FROM Cliente WHERE id_cli = @id_cli";
+            return await conn.QueryFirstOrDefaultAsync<Cliente>(query.ToString(), new { id_cli = id_cli });
+        }
+
+
+        public async Task<bool> UpdateCliente(Cliente cliente)
+        {
+            var conn = new SqlConnection(_configuration.Value);
+            var query = "UPDATE Cliente SET nom_cli = @nom_cli, apell_cli = @apell_cli, tel_cli = @tel_cli, email_cli = @email_cli, dir_cli = @dir_cli WHERE id_cli = @id_cli";
+            var result = await conn.ExecuteAsync(query.ToString(), new
+            {
+                cliente.nom_cli,
+                cliente.apell_cli,
+                cliente.tel_cli,
+                cliente.email_cli,
+                cliente.dir_cli,
+                cliente.id_cli
+            });
+            return result > 0;
+        } 
     }
 }

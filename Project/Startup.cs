@@ -30,7 +30,6 @@ namespace Project
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddSingleton<WeatherForecastService>();
-            //services.AddScoped<IFilmsService, FilmsService>();
             services.AddScoped<IClienteService, ClienteService>();
 
             //Connection

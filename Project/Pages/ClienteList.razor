@@ -1,0 +1,53 @@
+﻿@page "/clientlist"
+@using Data.Model
+@using Data.Service
+
+@inject IClienteService ClienteService
+
+<h3>Lista de Clientes</h3>
+@if(clientes == null){
+	<p><em>Cargando ...</em></p>
+} else
+{
+	<table class="table">
+		<thead>
+			<tr>
+				<th>ID:</th>
+				<th>NOMBRE:</th>
+				<th>APELLIDO:</th>
+				<th>TELEFONO:</th>
+				<th>EMAIL:</th>
+				<th>DIRECCION:</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var cliente in clientes)
+		   {
+			   <tr>
+				   <td>@cliente.id_cli</td>
+				   <td>@cliente.nom_cli</td>
+				   <td>@cliente.apell_cli</td>
+				   <td>@cliente.tel_cli</td>
+				   <td>@cliente.email_cli</td>
+				   <td>@cliente.dir_cli</td>
+				   <td><a href="/ClienteAdd/@cliente.id_cli"><i>Editar</i></a></td>
+				   <td><a href="/clientdelete/@cliente.id_cli"><i>Borar</i></a></td>
+			   </tr>
+		   }
+		</tbody>
+	</table>
+}
+
+@code {
+	private IEnumerable<Cliente> clientes;
+	protected override async Task OnInitializedAsync()
+	{
+		try
+		{
+			clientes = await ClienteService.GetAllClientes();
+		} catch(Exception)
+		{
+			throw;
+		}
+	}
+}

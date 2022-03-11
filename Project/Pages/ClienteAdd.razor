@@ -1,4 +1,5 @@
 ﻿@page "/ClienteAdd"
+@page "/ClienteAdd/{id_cli:int}"
 @using Data.Model
 @using Data.Service
 
@@ -6,7 +7,7 @@
 @inject NavigationManager NavigationManager
 
 <h3>ClienteAdd</h3>
-<EditForm Model="@cliente" OnValidSubmit="@ClienteInsert">
+<EditForm Model="@cliente">
     <table>
         <tr>
             <td>Código:</td>
@@ -34,7 +35,13 @@
         </tr>
         <tr>
             <td colspan="2">
-                <input type="submit" value="Adicionar" />
+                @if(id_cli > 0)
+                {
+                    <input type="submit" value="Actualizar" @onclick="ClienteUpdate" />
+                } else
+                {
+                    <input type="submit" value="Adicionar" @onclick="ClienteInsert" />
+                }
                 <input type="button" value="Cancelar" @onclick="@Cancel"/>
             </td>
         </tr>
@@ -45,6 +52,9 @@
 
 
 @code {
+    [Parameter]
+    public int id_cli { get; set;  }
+
     Cliente cliente = new Cliente();
 
     protected async Task ClienteInsert()
@@ -53,8 +63,25 @@
         NavigationManager.NavigateTo("/");
     }
 
+    protected async Task ClienteUpdate()
+    {
+        await ClienteService.UpdateCliente(cliente);
+        NavigationManager.NavigateTo("/");
+    }
+
     void Cancel()
     {
         NavigationManager.NavigateTo("/");
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if(id_cli == 0)
+        {
+
+        } else
+        {
+            cliente = await ClienteService.GetCliente(id_cli);
+        }
     }
 }
