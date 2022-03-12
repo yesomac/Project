@@ -1,0 +1,65 @@
+﻿@page "/ProductAdd"
+@page "/ProductAdd/{id_pro:int}"
+
+@using Data.Model
+@using Data.Service
+
+@inject IProductoService ProductoService
+@inject NavigationManager NavigationManager
+
+<h3>ProductAdd</h3>
+<EditForm Model="@producto">
+	<table>
+		<tr>
+			<td>CODIGO</td>
+			<td><input type="text" @bind="producto.id_pro" required></input></td>
+		</tr>
+		<tr>
+			<td>PRECIO</td>
+			<td><input type="text" @bind="producto.prec_pro" required></input></td>
+		</tr>
+		<tr>
+			<td>DIS</td>
+			<td><input type="text" @bind="producto.disp_pro" required></input></td>
+		</tr>
+		<tr>
+			<td>PROVEEDOR</td>
+			<td><input type="text" @bind="producto.prov_pro" required></input></td>
+		</tr>
+		<tr>
+			<td>CANTIDAD</td>
+			<td><input type="text" @bind="producto.cant_pro" required></input></td>
+		</tr>
+		<tr>
+			<td>NOMBRE</td>
+			<td><input type="text" @bind="producto.nom_pro" required></input></td>
+		</tr>
+		<tr>
+			<td>GARANTIA</td>
+			<td><input type="text" @bind="producto.gar_pro" required></input></td>
+		</tr>
+		<tr>
+			<td>DESCRIPCION</td>
+			<td><input type="text" @bind="producto.desc_pro" required></input></td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				@*@if(id_pro > 0)
+				{
+					<input type="submit" value="Actualizar" @onclick=""/>
+				}*@
+				<input type="submit" value="Crear" @onclick="ProductoInsert"/>
+			</td>
+		</tr>
+	</table>
+</EditForm>
+
+@code {
+	Producto producto = new Producto();
+
+	protected async Task ProductoInsert()
+	{
+		await ProductoService.ProductoInsert(producto);
+		NavigationManager.NavigateTo("/");
+	}
+}

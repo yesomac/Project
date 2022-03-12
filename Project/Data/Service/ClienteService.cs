@@ -69,6 +69,7 @@ namespace Project.Data.Service
         }
 
 
+        //actualizar
         public async Task<bool> UpdateCliente(Cliente cliente)
         {
             var conn = new SqlConnection(_configuration.Value);

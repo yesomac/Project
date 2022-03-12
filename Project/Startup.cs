@@ -31,6 +31,7 @@ namespace Project
             services.AddServerSideBlazor();
             services.AddSingleton<WeatherForecastService>();
             services.AddScoped<IClienteService, ClienteService>();
+            services.AddScoped<IProductoService, ProductoService>();
 
             //Connection
             var SqlConnectionConfiguration = new SqlConnectionConfiguration(Configuration.GetConnectionString("SqlDBContext"));

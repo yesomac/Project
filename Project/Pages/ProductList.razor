@@ -1,0 +1,59 @@
+﻿@page "/productList"
+@using Data.Model
+@using Data.Service
+
+@inject IProductoService ProductoService
+
+<h3>Lista De Productos</h3>
+@if(productos == null)
+{
+	<p><em>Cargando ...</em></p>
+} else
+{
+	<table class="table">
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th>PRECIO</th>
+				<th>DISPONIBILIDAD</th>
+				<th>PROVEEDOR</th>
+				<th>CANTIDAD</th>
+				<th>NOMBRE</th>
+				<th>GARANTIA</th>
+				<th>DESCRIPCION</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach(var producto in productos)
+			{
+				<tr>
+					<td>@producto.id_pro</td>
+					<td>@producto.prec_pro</td>
+					<td>@producto.disp_pro</td>
+					<td>@producto.prov_pro</td>
+					<td>@producto.cant_pro</td>
+					<td>@producto.nom_pro</td>
+					<td>@producto.gar_pro</td>
+					<td>@producto.desc_pro</td>
+					<td><a href="/ProductAdd/@producto.id_pro"><i>Editar</i></a></td>
+					<td><a href="/UpdateProductos/@producto.id_pro"><i>Borrar</i></a></td>
+				</tr>
+			}
+		</tbody>
+	</table>
+}
+
+@code {
+	private IEnumerable<Producto> productos;
+	protected override async Task OnInitializedAsync()
+	{
+		try
+		{
+			productos = await ProductoService.GetAllProduct();
+		}
+		catch (Exception)
+		{
+			throw;
+		}
+	}
+}
